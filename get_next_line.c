@@ -6,8 +6,12 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:23:49 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/03/21 13:26:37 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/03/21 13:41:10 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Constructor, Cleaner, Reader (check leaks)
+#include "get_next_line.h"
+
+char	*get_next_line(int fd)
+{
+}
