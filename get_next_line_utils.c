@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:24:32 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/03/21 13:35:00 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/04 15:46:29 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_bzero(void *s, size_t n)
 {
 	unsigned char	*p;
 
+	if (!s)
+		return ;
 	p = s;
 	while (n-- > 0)
 		*p++ = 0;
@@ -37,32 +39,57 @@ int	ft_strlen(const char *s)
 	int	i;
 
 	i = 0;
-	while (s[i])
+	while (s && s[i])
 		i++;
 	return (i);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+int	ft_strrchr(const char *s, int c)
 {
-	size_t	max;
 	char	*str;
-	size_t	i;
+	int		i;
 
-	if (s == NULL)
+	if (!s)
+		return (1);
+	str = (char *)s;
+	i = (int)ft_strlen(str);
+	while (i > 0)
+	{
+		if (str[i] == (char)c)
+			return (1);
+		i--;
+	}
+	if (str[i] == (char)c)
+		return (1);
+	return (0);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*str;
+	int		i;
+	int		y;
+
+	if (!s1 || !s2)
 		return (NULL);
 	i = 0;
-	max = ft_strlen(s);
-	if (len > max)
-		len = max;
-	str = ft_calloc(sizeof(char), len + 1);
-	if (!str)
+	y = 0;
+	str = ft_calloc(sizeof(char), (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (str == NULL)
 		return (NULL);
-	while (start < max && i < len)
+	while (s1[i])
 	{
-		str[i] = s[start];
+		str[i] = s1[i];
 		i++;
-		start++;
 	}
+	free ((void *)s1);
+	while (s2[y])
+	{
+		str[i] = s2[y];
+		y++;
+		i++;
+	}
+	free ((void *)s2);
 	return (str);
 }
 
