@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:24:32 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/04 15:46:29 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:14:30 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,18 @@ int	ft_strrchr(const char *s, int c)
 	int		i;
 
 	if (!s)
-		return (1);
+		return (0);
 	str = (char *)s;
 	i = (int)ft_strlen(str);
 	while (i > 0)
 	{
 		if (str[i] == (char)c)
-			return (1);
+			return (0);
 		i--;
 	}
 	if (str[i] == (char)c)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -89,7 +89,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		y++;
 		i++;
 	}
-	free ((void *)s2);
 	return (str);
 }
 
