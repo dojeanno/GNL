@@ -6,111 +6,83 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:23:49 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/06 17:56:17 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:14:11 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-#include <string.h>
-
-void    *ft_memcpy(void *dst, const void *src, size_t n)
-{
-        char    *destination;
-        size_t  i;
-
-        if (dst == NULL && src == NULL)
-                return (NULL);
-        i = 0;
-        destination = dst;
-        while (i < n)
-        {
-                destination[i] = *(char *)src++;
-                i++;
-        }
-        return (destination);
-}
 
 char	*cleaner(char *stash)
 {
-	char	*hold;
 	int		i;
 	int		j;
-
+	char	*new_stash;
 	if (!stash)
 		return (NULL);
 	i = 0;
-	hold = stash;
-	while (stash[i] && (stash[i] != '\n'))
+	while (stash[i] != '\n' && stash)
 		i++;
 	if (stash[i] == '\n')
 		i++;
-	stash = ft_calloc(sizeof(char), ft_strlen(hold) - i + 1);
-	if (!stash)
+	j = ft_strlen(stash) - i;
+	new_stash = ft_calloc(sizeof(char), j + 1);
+	if (!new_stash)
 		return (NULL);
 	j = 0;
-	while (hold[i])
+	while (stash[i] != '\0')
 	{
-		stash[j] = hold[i];
-		j++;
+		new_stash[j] = stash[i];
 		i++;
+		j++;
 	}
-	return (stash);
+	free (stash);
+	return (new_stash);
 }
 
 char	*builder(char *stash)
 {
-	char	*line;
 	int		i;
+	int		j;
+	char	*line;
 	
 	if (!stash)
 		return (NULL);
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
 		i++;
-	if (stash[i] == '\n')
-		i++;
 	line = ft_calloc(sizeof(char), i + 1);
 	if (!line)
 		return (NULL);
-	ft_memcpy(line, stash, i);
+	j = 0;
+	while (j <= i)
+	{
+		line[j] = stash[j];
+		j++;	
+	}
 	return (line);
-}
-
-char	*readline(int fd, char *stash)
-{
-	char	buf[BUFFER_SIZE + 1];
-	int		bread;
-	
-	bread = 1;
-	if (!stash)
-	{
-		bread = read(fd, buf, BUFFER_SIZE);
-		if (!bread)
-			return (NULL);
-		stash = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
-		if (!stash)
-			return (NULL);
-		ft_memcpy(stash, buf, BUFFER_SIZE);
-	}
-	while (bread && ft_strrchr(buf, '\n'))
-	{
-		bread = read(fd, buf, BUFFER_SIZE);
-		if (!bread)
-			return (NULL);
-		stash = ft_strjoin(stash, buf);
-	}
-	return (stash);
 }
 
 char	*get_next_line(int fd)
 {
-	static	char	*stash;
+	static char		*stash;
+	static int		eof;
+	char			buff[BUFFER_SIZE];
 	char			*line;
 	
 	if (BUFFER_SIZE < 1 || (fd < 0 || fd > 1023))
 		return (NULL);
-	stash = readline(fd, stash);
+	if (!stash)
+	{
+		stash = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+		if (!stash)
+			return (NULL);
+		eof = read(fd, stash, BUFFER_SIZE);
+	}
+	while (eof > 0 && ft_strrchr(stash, '\n'))
+	{
+		eof = read(fd, buff, BUFFER_SIZE);
+		stash = ft_strjoin(stash, buff);
+	}
 	line = builder(stash);
 	stash = cleaner(stash);
 	return (line);

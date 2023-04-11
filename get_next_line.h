@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:24:34 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/06 17:15:30 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:19:01 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h> // REMOVE !!!!!
 # include <fcntl.h> // Remove
 #  ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000
+#  define BUFFER_SIZE 5
 #  endif
 
 char	*get_next_line(int fd);
