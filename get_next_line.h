@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:24:34 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/11 16:19:01 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/17 13:47:31 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@
 char	*get_next_line(int fd);
 int		ft_strlen(const char *s);
 void	*ft_calloc(size_t count, size_t size);
-char	*ft_strjoin(char const *s1, char const *s2);
-int		ft_strrchr(const char *s, int c);
+char	*ft_strjoin(char *s1, char *s2);
+int		ft_strrchr(const char *s);
+void	ft_bzero(void *s, size_t n);
 
 
 
