@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:24:32 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/21 11:01:44 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:59:38 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,11 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	free (s1);
 	while (s2 && s2[y])
+		str[i++] = s2[y++];
+	if (str[0] == 0)
 	{
-		str[i] = s2[y];
-		y++;
-		i++;
+		free (str);
+		return (NULL);
 	}
 	return (str);
 }
-
-// Will need protections!

@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:23:49 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/21 13:15:19 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/21 16:17:32 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*cleaner(char *stash)
 		vars.i++;
 		vars.j++;
 	}
+	free (stash);
 	return (new_stash);
 }
 
@@ -49,7 +50,7 @@ char	*builder(char *stash)
 		vars.i++;
 	if (stash[vars.i] == '\n')
 		vars.i++;
-	vars.line = ft_calloc(sizeof(t_vars), vars.i + 1);
+	vars.line = ft_calloc(sizeof(char), vars.i + 1);
 	if (!vars.line)
 		return (NULL);
 	vars.j = 0;
@@ -59,6 +60,25 @@ char	*builder(char *stash)
 		vars.j++;
 	}
 	return (vars.line);
+}
+
+char	*reader(int fd, char *stash)
+{
+	t_vars	vars;
+
+	vars.eof = 1;
+	while (vars.eof > 0 && ft_strrchr(stash))
+	{
+		ft_bzero(vars.buff, BUFFER_SIZE + 1);
+		vars.eof = read(fd, vars.buff, BUFFER_SIZE);
+		if (vars.eof < 0)
+		{
+			free (stash);
+			return (NULL);
+		}
+		stash = ft_strjoin(stash, vars.buff);
+	}
+	return (stash);
 }
 
 char	*get_next_line(int fd)
@@ -74,16 +94,15 @@ char	*get_next_line(int fd)
 		if (!stash)
 			return (NULL);
 	}
-	vars.eof = 1;
-	while (vars.eof > 0 && ft_strrchr(stash))
-	{
-		ft_bzero(vars.buff, BUFFER_SIZE + 1);
-		vars.eof = read(fd, vars.buff, BUFFER_SIZE);
-		stash = ft_strjoin(stash, vars.buff);
-	}
+	stash = reader(fd, stash);
 	vars.line = builder(stash);
 	stash = cleaner(stash);
-	if (vars.line[0] == 0)
+	if (stash && stash[0] == 0)
+	{
+		free (stash);
+		stash = NULL;
+	}
+	if (vars.line && vars.line[0] == 0)
 	{	
 		free (vars.line);
 		return (NULL);
