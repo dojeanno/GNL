@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:24:32 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/17 13:49:38 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:01:44 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*ft_calloc(size_t count, size_t size)
 	return ((void *)ptr);
 }
 
-int	ft_strlen(const char *s)
+int	ft_strlen(char *s)
 {
 	int	i;
 
@@ -44,7 +44,7 @@ int	ft_strlen(const char *s)
 	return (i);
 }
 
-int	ft_strrchr(const char *s)
+int	ft_strrchr(char *s)
 {
 	int		i;
 

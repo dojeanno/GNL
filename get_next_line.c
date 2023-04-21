@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:23:49 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/17 18:44:31 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:15:19 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,61 +14,58 @@
 
 char	*cleaner(char *stash)
 {
-	int		i;
-	int		j;
+	t_vars	vars;
 	char	*new_stash;
+
 	if (!stash)
 		return (NULL);
-	i = 0;
-	while (stash && stash[i] != '\n' && stash[i])
-		i++;
-	if (stash[i] == '\n')
-		i++;
-	j = ft_strlen(stash) - i;
-	new_stash = ft_calloc(sizeof(char), j + 1);
+	vars.i = 0;
+	while (stash[vars.i] && stash[vars.i] != '\n')
+		vars.i++;
+	if (stash[vars.i] == '\n')
+		vars.i++;
+	vars.j = ft_strlen(stash) - vars.i;
+	new_stash = ft_calloc(sizeof(char), vars.j + 1);
 	if (!new_stash)
 		return (NULL);
-	j = 0;
-	while (stash[i] != '\0')
+	vars.j = 0;
+	while (stash[vars.i] != '\0')
 	{
-		new_stash[j] = stash[i];
-		i++;
-		j++;
+		new_stash[vars.j] = stash[vars.i];
+		vars.i++;
+		vars.j++;
 	}
-	free (stash);
 	return (new_stash);
 }
 
 char	*builder(char *stash)
 {
-	int		i;
-	int		j;
-	char	*line;
-	
+	t_vars	vars;
+
 	if (!stash)
 		return (NULL);
-	i = 0;
-	while (stash && stash[i] != '\n' && stash[i])
-		i++;
-	line = ft_calloc(sizeof(char), i + 1);
-	if (!line)
+	vars.i = 0;
+	while (stash[vars.i] && stash[vars.i] != '\n')
+		vars.i++;
+	if (stash[vars.i] == '\n')
+		vars.i++;
+	vars.line = ft_calloc(sizeof(t_vars), vars.i + 1);
+	if (!vars.line)
 		return (NULL);
-	j = 0;
-	while (j <= i)
+	vars.j = 0;
+	while (vars.j < vars.i)
 	{
-		line[j] = stash[j];
-		j++;	
+		vars.line[vars.j] = stash[vars.j];
+		vars.j++;
 	}
-	return (line);
+	return (vars.line);
 }
 
 char	*get_next_line(int fd)
 {
+	t_vars			vars;
 	static char		*stash;
-	int				eof;
-	char			buff[BUFFER_SIZE + 1];
-	char			*line;
-	
+
 	if (BUFFER_SIZE < 1 || (fd < 0 || fd > 1023))
 		return (NULL);
 	if (!stash)
@@ -77,19 +74,19 @@ char	*get_next_line(int fd)
 		if (!stash)
 			return (NULL);
 	}
-	eof = BUFFER_SIZE;
-	while (eof == BUFFER_SIZE && ft_strrchr(stash))
+	vars.eof = 1;
+	while (vars.eof > 0 && ft_strrchr(stash))
 	{
-		ft_bzero(buff, BUFFER_SIZE + 1);
-		eof = read(fd, buff, BUFFER_SIZE);
-		stash = ft_strjoin(stash, buff);
+		ft_bzero(vars.buff, BUFFER_SIZE + 1);
+		vars.eof = read(fd, vars.buff, BUFFER_SIZE);
+		stash = ft_strjoin(stash, vars.buff);
 	}
-	line = builder(stash);
+	vars.line = builder(stash);
 	stash = cleaner(stash);
-	if (line[0] == 0)
-	{
-		free (line);
+	if (vars.line[0] == 0)
+	{	
+		free (vars.line);
 		return (NULL);
 	}
-	return (line);
+	return (vars.line);
 }
