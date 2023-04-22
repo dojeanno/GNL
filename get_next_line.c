@@ -6,13 +6,13 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:23:49 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/22 14:11:43 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/22 18:43:43 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*cleaner(char *stash)
+char	*clean_buffer(char *stash)
 {
 	t_vars	vars;
 	char	*new_stash;
@@ -39,7 +39,7 @@ char	*cleaner(char *stash)
 	return (new_stash);
 }
 
-char	*builder(char *stash)
+char	*create_line(char *stash)
 {
 	t_vars	vars;
 
@@ -62,7 +62,7 @@ char	*builder(char *stash)
 	return (vars.line);
 }
 
-char	*reader(int fd, char *stash)
+char	*fill_buffer(int fd, char *stash)
 {
 	t_vars	vars;
 	char	*buff;
@@ -100,9 +100,9 @@ char	*get_next_line(int fd)
 		if (!stash)
 			return (NULL);
 	}
-	stash = reader(fd, stash);
-	vars.line = builder(stash);
-	stash = cleaner(stash);
+	stash = fill_buffer(fd, stash);
+	vars.line = create_line(stash);
+	stash = clean_buffer(stash);
 	if (stash && stash[0] == 0)
 	{
 		free (stash);
