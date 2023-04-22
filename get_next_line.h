@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:24:34 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/21 15:59:50 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/22 13:12:11 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
+# include <limits.h>
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 100
 # endif
 
 typedef struct s_vars
@@ -24,7 +25,6 @@ typedef struct s_vars
 	char	*line;
 	int		i;
 	int		j;
-	char	buff[BUFFER_SIZE + 1];
 }				t_vars;
 
 char	*get_next_line(int fd);

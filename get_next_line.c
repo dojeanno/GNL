@@ -6,7 +6,7 @@
 /*   By: dojeanno <dojeanno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 13:23:49 by dojeanno          #+#    #+#             */
-/*   Updated: 2023/04/21 16:17:32 by dojeanno         ###   ########.fr       */
+/*   Updated: 2023/04/22 14:11:43 by dojeanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,25 @@ char	*builder(char *stash)
 char	*reader(int fd, char *stash)
 {
 	t_vars	vars;
+	char	*buff;
 
+	buff = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	if (!buff)
+		return (NULL);
 	vars.eof = 1;
 	while (vars.eof > 0 && ft_strrchr(stash))
 	{
-		ft_bzero(vars.buff, BUFFER_SIZE + 1);
-		vars.eof = read(fd, vars.buff, BUFFER_SIZE);
+		ft_bzero(buff, BUFFER_SIZE + 1);
+		vars.eof = read(fd, buff, BUFFER_SIZE);
 		if (vars.eof < 0)
 		{
 			free (stash);
+			free (buff);
 			return (NULL);
 		}
-		stash = ft_strjoin(stash, vars.buff);
+		stash = ft_strjoin(stash, buff);
 	}
+	free (buff);
 	return (stash);
 }
 
@@ -86,7 +92,7 @@ char	*get_next_line(int fd)
 	t_vars			vars;
 	static char		*stash;
 
-	if (BUFFER_SIZE < 1 || (fd < 0 || fd > 1023))
+	if (BUFFER_SIZE < 1 || fd > OPEN_MAX || fd < 0)
 		return (NULL);
 	if (!stash)
 	{
